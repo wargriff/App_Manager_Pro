@@ -3,8 +3,13 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/mon_app_flutter/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/mon_app_flutter/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/mon_app_flutter/build" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.12 (Pycharm_Project_v 3.12)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
   </component>
 </module>
