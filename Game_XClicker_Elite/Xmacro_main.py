@@ -40,6 +40,15 @@ class EngineProxy:
     def enabled(self):
         return self.manager.mouse.enabled
 
+    @property
+    def running(self):
+        return self.manager.mouse.running and self.manager.keyboard.running
+
+    @running.setter
+    def running(self, state: bool):
+        self.manager.mouse.running = state
+        self.manager.keyboard.running = state
+
     def toggle(self):
         self.manager.toggle_all()
 
@@ -71,6 +80,14 @@ class EngineProxy:
 
     def get_cps(self, key):
         return self._get_engine(key).get_cps(key)
+
+    def get_real_cps(self, key):
+        return self._get_engine(key).get_real_cps(key)
+
+    def set_active(self, key, state: bool):
+        engine = self._get_engine(key)
+        if key in engine.buttons:
+            engine.buttons[key].active = state
 # =========================
 # SAFE STOP
 # =========================

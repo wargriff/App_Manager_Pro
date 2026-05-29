@@ -119,21 +119,26 @@ class Application:
         self._closing = True
 
         try:
+            # noinspection PyUnresolvedReferences
             stop_scan()
 
         except Exception:
             pass
 
+        # noinspection PyUnresolvedReferences
         for after_id in list(self.after_ids):
 
             try:
+                # noinspection PyUnresolvedReferences
                 self.safe_after_cancel(after_id)
 
             except Exception:
                 pass
 
+        # noinspection PyUnresolvedReferences
         self.after_ids.clear()
 
+        # noinspection PyUnresolvedReferences
         self.icon_cache.clear()
 
         try:

@@ -245,7 +245,6 @@ class ProgramScanner:
     def scan_all(
         self,
         callback=None,
-        include_portable=True,
     ):
 
         self.reset()
@@ -448,7 +447,6 @@ class ProgramScanner:
                 self.scan_directory(
                     current,
                     depth,
-                    callback,
                     path_queue,
                     local_batch,
                 )
@@ -485,8 +483,7 @@ class ProgramScanner:
         self,
         path,
         depth,
-        callback,
-        path_queue,
+            path_queue,
         batch,
     ):
 
@@ -669,7 +666,6 @@ def scan_all(
 
     _scanner_instance.scan_all(
         callback,
-        include_portable=include_portable,
     )
 
 

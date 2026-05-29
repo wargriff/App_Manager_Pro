@@ -182,7 +182,7 @@ class Uninstaller:
     # =========================================================
 
     @staticmethod
-    def uninstall(name, path=None, source="installed"):
+    def uninstall(name, path=None):
         logs = []
 
         if path:

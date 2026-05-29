@@ -396,8 +396,7 @@ class LauncherScanner:
 
     def scan_battlenet_db(
         self,
-        launcher,
-        callback,
+            callback,
     ):
 
         db = os.path.expandvars(
@@ -483,7 +482,6 @@ class LauncherScanner:
                 elif launcher.scan_type == SCAN_BATTLENET_DB:
 
                     self.scan_battlenet_db(
-                        launcher,
                         callback,
                     )
 

@@ -1,8 +1,28 @@
+import os
+
 import pygame
-from script.game_play import Game
-from script.menu import Menu, GameOverUI
+
+from core.game_play import Game
+from systems.menu import Menu, GameOverUI
+
+# Fix audio Windows / PyInstaller
+os.environ["SDL_AUDIODRIVER"] = "directsound"
 
 pygame.init()
+
+# ==============================
+# AUDIO SAFE INIT
+# ==============================
+try:
+    pygame.mixer.init(
+        frequency=44100,
+        size=-16,
+        channels=2,
+        buffer=512
+    )
+    print("✅ Mixer initialized:", pygame.mixer.get_init())
+except pygame.error:
+    print("⚠️ Audio désactivé")
 
 # ==============================
 # WINDOW CONFIG
@@ -35,7 +55,6 @@ game = Game(screen)
 menu = Menu(screen)
 game_over_ui = GameOverUI(screen)
 
-# Fonts pour WIN
 font_big = pygame.font.SysFont("Arial", 70, bold=True)
 font_small = pygame.font.SysFont("Arial", 32)
 
@@ -56,7 +75,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # ---------------- RESIZE ----------------
+        # ---------- RESIZE ----------
         elif event.type == pygame.VIDEORESIZE:
 
             screen = pygame.display.set_mode(
@@ -64,22 +83,25 @@ while running:
                 pygame.RESIZABLE
             )
 
+            # Update toutes les refs écran
             game.resize(event.w, event.h)
-
             game.screen = screen
             menu.screen = screen
             game_over_ui.screen = screen
 
-        # ---------------- KEYBOARD ----------------
+        # ---------- KEYBOARD ----------
         elif event.type == pygame.KEYDOWN:
 
             if state == MENU and event.key == pygame.K_RETURN:
                 game.reset_full_game()
                 state = GAME
 
-        # ---------------- GAME OVER BUTTON ----------------
-        if state == GAME_OVER:
+            elif state == WIN and event.key == pygame.K_RETURN:
+                game.restart_game()
+                state = MENU
 
+        # ---------- GAME OVER ----------
+        elif state == GAME_OVER:
             if game_over_ui.handle_event(event):
                 game.restart_game()
                 state = MENU
@@ -102,20 +124,16 @@ while running:
     # =============================
     screen.fill((10, 10, 25))
 
-    # ---------- MENU ----------
     if state == MENU:
         menu.draw()
 
-    # ---------- GAME ----------
     elif state == GAME:
         game.draw()
 
-    # ---------- GAME OVER ----------
     elif state == GAME_OVER:
         game.draw()
         game_over_ui.draw()
 
-    # ---------- WIN ----------
     elif state == WIN:
 
         game.draw()
@@ -132,7 +150,6 @@ while running:
         screen.blit(overlay, (0, 0))
 
         win_text = font_big.render("VICTOIRE !", True, (0, 255, 0))
-
         retry_text = font_small.render(
             "Appuie sur ENTER pour rejouer",
             True,

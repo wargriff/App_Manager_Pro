@@ -7,7 +7,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton
 from PyQt6.QtCore import Qt, QTimer
 
-from engine_win32 import MacroEngine
+from Xmacro_main import EngineProxy
+from engine_win32 import MacroManager
 
 
 class ClickTest(QWidget):
@@ -85,7 +86,7 @@ class ClickTest(QWidget):
                 self.start_time = time.time()
 
             # simulate engine stat for manual mode
-            self.engine.stats["left"].clicks += 1
+            self.engine.manager.mouse._register("left")
 
     # -------------------------
     def update_ui(self):
@@ -107,7 +108,7 @@ class ClickTest(QWidget):
 def main():
     app = QApplication(sys.argv)
 
-    engine = MacroEngine()
+    engine = EngineProxy(MacroManager())
 
     w = ClickTest(engine)
     w.show()

@@ -30,6 +30,7 @@ SCAN_EXTRA_DRIVES = True
 def is_admin() -> bool:
 
     try:
+        # noinspection PyUnresolvedReferences
         return ctypes.windll.shell32.IsUserAnAdmin()
     except Exception:
         return False
@@ -44,6 +45,7 @@ def relaunch_as_admin():
 
     try:
 
+        # noinspection PyUnresolvedReferences
         ctypes.windll.shell32.ShellExecuteW(
             None,
             "runas",

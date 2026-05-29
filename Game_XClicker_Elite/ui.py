@@ -238,6 +238,6 @@ class UI(QWidget):
         )
 
         key = self.selector.currentText()
-        cps = self.engine.get_cps(key)
+        cps = self.engine.get_real_cps(key)
 
         self.live.setText(f"REAL CPS: {cps}")

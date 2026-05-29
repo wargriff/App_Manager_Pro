@@ -30,6 +30,7 @@ class Utils:
                     f"Dossier introuvable: {target}"
                 )
 
+            # noinspection PyUnresolvedReferences
             subprocess.Popen(
                 ["explorer", os.path.normpath(path)]
             )

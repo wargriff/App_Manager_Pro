@@ -41,6 +41,14 @@ class AppUI:
 
     def __init__(self, root: ctk.CTk):
 
+        self.search_var = None
+        self.search = None
+        self.canvas = None
+        self.scrollbar = None
+        self.list_container = None
+        self.canvas_window = None
+        self.status = None
+        self.progress = None
         self.root = root
 
         self.root.title("App Manager Pro")
@@ -986,7 +994,6 @@ class AppUI:
                 success, msg = Uninstaller.uninstall(
                     item.name,
                     item.path,
-                    item.source,
                 )
 
         except Exception as error:
