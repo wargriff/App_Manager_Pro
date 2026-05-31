@@ -1,4 +1,5 @@
 import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -30,7 +31,7 @@ class Uninstaller:
     def run_command(cmd):
         try:
             if isinstance(cmd, str):
-                cmd = shlex.split(cmd)
+                cmd = shlex.split(cmd, posix=False)
 
             result = subprocess.run(
                 cmd,
@@ -42,6 +43,77 @@ class Uninstaller:
 
         except Exception as e:
             return -1, "", str(e)
+
+    @staticmethod
+    def parse_uninstall_command(cmd):
+        """Parse une UninstallString Windows en liste d'arguments."""
+
+        cmd = cmd.strip()
+
+        if not cmd:
+            return []
+
+        if cmd.lower().startswith("msiexec"):
+
+            normalized = cmd
+
+            if (
+                "/x" not in normalized.lower()
+                and "/i" in normalized.lower()
+            ):
+                normalized = re.sub(
+                    r"/i",
+                    "/x",
+                    normalized,
+                    count=1,
+                    flags=re.IGNORECASE,
+                )
+
+            if "/quiet" not in normalized.lower():
+                normalized += " /quiet /norestart"
+
+            return shlex.split(normalized, posix=False)
+
+        match = re.match(
+            r'^"([^"]+)"\s*(.*)$',
+            cmd,
+        )
+
+        if match:
+
+            parts = [match.group(1)]
+
+            rest = match.group(2).strip()
+
+            if rest:
+                parts.extend(
+                    shlex.split(rest, posix=False)
+                )
+
+            return Uninstaller._append_silent_flags(parts)
+
+        parts = shlex.split(cmd, posix=False)
+
+        return Uninstaller._append_silent_flags(parts)
+
+    @staticmethod
+    def _append_silent_flags(parts):
+
+        if not parts:
+            return parts
+
+        joined = " ".join(parts).lower()
+
+        if parts[0].lower().startswith("msiexec"):
+            return parts
+
+        if not any(
+            flag in joined
+            for flag in ["/s", "/silent", "/quiet"]
+        ):
+            return parts + ["/S"]
+
+        return parts
 
     @staticmethod
     def kill_process_from_path(path):
@@ -198,19 +270,12 @@ class Uninstaller:
             if not cmd:
                 continue
 
-            # 🔥 FIX guillemets + msiexec
-            cmd = cmd.replace('"', '').strip()
+            command = Uninstaller.parse_uninstall_command(cmd)
 
-            if "msiexec" in cmd.lower():
-                if "/x" not in cmd.lower():
-                    cmd = cmd.replace("/i", "/x")
-                cmd += " /quiet /norestart"
+            if not command:
+                continue
 
-            else:
-                if not any(x in cmd.lower() for x in ["/s", "/silent", "/quiet"]):
-                    cmd += " /S"
-
-            code, out, err = Uninstaller.run_command(cmd)
+            code, out, err = Uninstaller.run_command(command)
 
             logs.append(f"{prog_name} => {code}")
 

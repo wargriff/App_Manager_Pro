@@ -415,48 +415,50 @@ class ProgramScanner:
         callback,
     ):
 
-        path_queue: queue.SimpleQueue = queue.SimpleQueue()
+        path_queue: queue.Queue = queue.Queue()
 
         drives = self.get_drives()
 
         for drive in drives:
             path_queue.put((drive, 0))
 
-        active = threading.Event()
-        active.set()
+        worker_count = min(16, MAX_WORKERS)
+
+        portable_done = threading.Event()
 
         def worker():
 
             local_batch = []
 
-            while active.is_set():
+            while (
+                not portable_done.is_set()
+                and not self.stop_event.is_set()
+            ):
 
-                if self.stop_event.is_set():
-                    return
+                try:
+                    current, depth = path_queue.get(timeout=1)
+
+                except queue.Empty:
+                    continue
 
                 try:
 
-                    current, depth = (
-                        path_queue.get_nowait()
+                    self.scan_directory(
+                        current,
+                        depth,
+                        path_queue,
+                        local_batch,
                     )
 
-                except Exception:
+                    if len(local_batch) >= EMIT_BATCH_SIZE:
 
-                    return
+                        for item in local_batch:
+                            self.emit(callback, item)
 
-                self.scan_directory(
-                    current,
-                    depth,
-                    path_queue,
-                    local_batch,
-                )
+                        local_batch.clear()
 
-                if len(local_batch) >= EMIT_BATCH_SIZE:
-
-                    for item in local_batch:
-                        self.emit(callback, item)
-
-                    local_batch.clear()
+                finally:
+                    path_queue.task_done()
 
             if local_batch:
 
@@ -465,7 +467,7 @@ class ProgramScanner:
 
         threads = []
 
-        for _ in range(MAX_WORKERS):
+        for _ in range(worker_count):
 
             thread = threading.Thread(
                 target=worker,
@@ -476,8 +478,12 @@ class ProgramScanner:
 
             threads.append(thread)
 
+        path_queue.join()
+
+        portable_done.set()
+
         for thread in threads:
-            thread.join()
+            thread.join(timeout=0.5)
 
     def scan_directory(
         self,
