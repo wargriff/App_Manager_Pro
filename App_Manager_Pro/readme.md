@@ -63,34 +63,89 @@ Au démarrage, utilisez **Scanner** dans la barre latérale (ou `Ctrl+R`) pour c
 
 ---
 
-## Architecture
+## Architecture Pro (v2)
+
+Architecture **Clean / layered** : séparation domaine, infrastructure, application et présentation.
 
 ```text
 App_Manager_Pro/
-├── main.py              # Point d’entrée, fenêtre, raccourcis, fermeture propre
-├── ui.py                # Interface CustomTkinter et logique d’affichage
-├── scanner.py           # Scan registre + portable, workers, cache
-├── scanner_cache.py     # Cache SQLite des résultats de scan
-├── winget_manager.py    # Parsing de `winget list`
-├── uninstaller.py       # Désinstallation (registre, MSI, dossiers)
-├── icon_manager.py      # Icônes Windows / images distantes
-├── utils.py             # Utilitaires (chemins, lancement, etc.)
-├── launcher_config.py   # Configuration des lanceurs / jeux
-├── launcher_manager.py  # Gestion et scan des lanceurs
-├── launcher_scanner.py  # Détection des jeux (Steam, Epic, etc.)
-├── uninstaller/         # Scripts de désinstallation spécialisés
-│   └── unreal engine.py
-├── requirements.txt     # Dépendances Python
-├── scanner_cache.db     # Généré au runtime (ignoré si besoin)
-└── .gitignore
+├── main.py                          # Entrée + bootstrap
+├── requirements.txt
+├── logs/                            # Journaux (généré)
+├── scanner_cache.db                 # Cache scan (généré)
+│
+├── app_manager/                     # Package principal
+│   ├── __main__.py                  # python -m app_manager
+│   ├── bootstrap.py                 # Init logging
+│   │
+│   ├── config/                      # Configuration
+│   │   ├── settings.py              # Constantes, chemins, raccourcis
+│   │   └── theme.py                 # Couleurs, polices UI
+│   │
+│   ├── core/                        # Noyau transversal
+│   │   ├── enums.py                 # FilterMode, AppCategory, ScanPhase…
+│   │   ├── exceptions.py            # Erreurs métier typées
+│   │   └── logging_config.py        # Logs fichier + console
+│   │
+│   ├── domain/                      # Logique métier pure
+│   │   ├── models/app_item.py       # Entité Application
+│   │   ├── catalog/app_catalog.py   # Catalogue + dédoublonnage
+│   │   └── filters/app_filter.py    # Filtres recherche / catégories
+│   │
+│   ├── infrastructure/              # Accès système / externe
+│   │   ├── scanner/engine.py        # Scan registre + portable
+│   │   ├── scanner/cache.py         # Cache SQLite
+│   │   ├── winget/client.py         # API Winget (liste, MAJ)
+│   │   ├── uninstall/service.py     # Désinstallation Windows
+│   │   ├── icons/provider.py        # Extraction icônes
+│   │   ├── filesystem/paths.py      # Lancement, dossiers, tailles
+│   │   └── launcher/                # Steam, Epic, etc.
+│   │
+│   ├── application/                 # Cas d’usage (orchestration)
+│   │   ├── window.py                # Fenêtre CTk principale
+│   │   └── use_cases/
+│   │       ├── scan_apps.py         # Scanner les apps
+│   │       ├── manage_updates.py    # Vérifier / appliquer MAJ
+│   │       └── uninstall_app.py     # Désinstaller
+│   │
+│   ├── presentation/                # Interface graphique
+│   │   ├── main_window.py           # Vue principale
+│   │   ├── components/              # Sidebar, recherche, statut
+│   │   ├── widgets/                 # Liste virtualisée, lignes
+│   │   └── controllers/             # Scan, mises à jour
+│   │
+│   └── scripts/                     # Scripts spécialisés
+│       └── unreal_engine.py
+│
+└── ui.py, services/, models/        # Alias compatibilité v1
 ```
 
-### Modules principaux
+### Couches
 
-- **`main.py`** — Crée la fenêtre `CTk`, centre l’UI, gère les exceptions et l’arrêt du scan à la fermeture.
-- **`ui.AppUI`** — Orchestre scan Winget + filesystem, files d’attente thread-safe, liste virtualisée.
-- **`scanner.ProgramScanner`** — Parallélisation (`ThreadPoolExecutor`), exclusions de dossiers/fichiers, émission par lots.
-- **`uninstaller.Uninstaller`** — Parse les commandes de désinstallation (`shlex`), vérifie les chemins sensibles.
+| Couche | Rôle |
+|--------|------|
+| **presentation** | Affichage CustomTkinter, événements utilisateur |
+| **application** | Cas d’usage : scan, MAJ, désinstallation |
+| **domain** | Modèles, catalogue, règles de filtrage |
+| **infrastructure** | Windows, Winget, fichiers, registre |
+| **core** | Enums, exceptions, logging |
+
+### PyCharm
+
+1. **Run → Edit Configurations → App Manager Pro**
+2. Script : `App_Manager_Pro/main.py`
+3. Working directory : `App_Manager_Pro`
+4. `App_Manager_Pro` → **Mark Directory as → Sources Root**
+5. Relancer PyCharm si les imports ne se résolvent pas
+
+### Lancer
+
+```powershell
+cd App_Manager_Pro
+python main.py
+# ou
+python -m app_manager
+```
 
 ---
 

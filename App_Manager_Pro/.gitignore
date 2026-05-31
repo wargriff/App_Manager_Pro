@@ -16,6 +16,13 @@ dist/
 .DS_Store
 Thumbs.db
 
+# Logs
+logs/
+*.log
+
+# Cache scan
+scanner_cache.db
+
 # Local cache
 *.db
 scanner_cache.db
