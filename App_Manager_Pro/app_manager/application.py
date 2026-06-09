@@ -1,4 +1,4 @@
-"""Compatibilité — voir app_manager.application.window."""
+"""Alias → application.window."""
 
 from app_manager.application.window import ApplicationWindow as Application
 

@@ -63,62 +63,36 @@ Au démarrage, utilisez **Scanner** dans la barre latérale (ou `Ctrl+R`) pour c
 
 ---
 
-## Architecture Pro (v2)
+## Architecture Pro (v2.1)
 
-Architecture **Clean / layered** : séparation domaine, infrastructure, application et présentation.
+> **Important :** le dossier projet s’appelle `App_Manager_Pro`, le package Python `app_manager`.  
+> Ce ne sont **pas** deux applications. Détails : [ARCHITECTURE.md](ARCHITECTURE.md).
+
+Architecture **Clean / layered** — une seule source de vérité par fonction :
 
 ```text
-App_Manager_Pro/
-├── main.py                          # Entrée + bootstrap
+App_Manager_Pro/                    ← Projet (PyCharm, Git)
+├── main.py                           ← Point d’entrée
+├── ARCHITECTURE.md
 ├── requirements.txt
-├── logs/                            # Journaux (généré)
-├── scanner_cache.db                 # Cache scan (généré)
 │
-├── app_manager/                     # Package principal
-│   ├── __main__.py                  # python -m app_manager
-│   ├── bootstrap.py                 # Init logging
-│   │
-│   ├── config/                      # Configuration
-│   │   ├── settings.py              # Constantes, chemins, raccourcis
-│   │   └── theme.py                 # Couleurs, polices UI
-│   │
-│   ├── core/                        # Noyau transversal
-│   │   ├── enums.py                 # FilterMode, AppCategory, ScanPhase…
-│   │   ├── exceptions.py            # Erreurs métier typées
-│   │   └── logging_config.py        # Logs fichier + console
-│   │
-│   ├── domain/                      # Logique métier pure
-│   │   ├── models/app_item.py       # Entité Application
-│   │   ├── catalog/app_catalog.py   # Catalogue + dédoublonnage
-│   │   └── filters/app_filter.py    # Filtres recherche / catégories
-│   │
-│   ├── infrastructure/              # Accès système / externe
-│   │   ├── scanner/engine.py        # Scan registre + portable
-│   │   ├── scanner/cache.py         # Cache SQLite
-│   │   ├── winget/client.py         # API Winget (liste, MAJ)
-│   │   ├── uninstall/service.py     # Désinstallation Windows
-│   │   ├── icons/provider.py        # Extraction icônes
-│   │   ├── filesystem/paths.py      # Lancement, dossiers, tailles
-│   │   └── launcher/                # Steam, Epic, etc.
-│   │
-│   ├── application/                 # Cas d’usage (orchestration)
-│   │   ├── window.py                # Fenêtre CTk principale
-│   │   └── use_cases/
-│   │       ├── scan_apps.py         # Scanner les apps
-│   │       ├── manage_updates.py    # Vérifier / appliquer MAJ
-│   │       └── uninstall_app.py     # Désinstaller
-│   │
-│   ├── presentation/                # Interface graphique
-│   │   ├── main_window.py           # Vue principale
-│   │   ├── components/              # Sidebar, recherche, statut
-│   │   ├── widgets/                 # Liste virtualisée, lignes
-│   │   └── controllers/             # Scan, mises à jour
-│   │
-│   └── scripts/                     # Scripts spécialisés
-│       └── unreal_engine.py
-│
-└── ui.py, services/, models/        # Alias compatibilité v1
+└── app_manager/                      ← Package Python importé
+    ├── config/                       settings, theme
+    ├── core/                         logging, enums, exceptions
+    ├── domain/                       métier + dédoublonnage
+    │   ├── models/app_item.py
+    │   ├── catalog/app_catalog.py
+    │   ├── dedup/app_deduplicator.py ← Supprime les programmes en double
+    │   └── filters/app_filter.py
+    ├── infrastructure/               scanner, winget, uninstall, icônes
+    ├── application/                  cas d’usage + fenêtre
+    ├── presentation/                 interface (code UI actif)
+    └── scripts/
+
+    services/  ui/  models/            ← ALIAS uniquement (pas de logique)
 ```
+
+Fichiers à la racine (`scanner.py`, `ui.py`, …) : raccourcis pour anciens imports PyCharm.
 
 ### Couches
 

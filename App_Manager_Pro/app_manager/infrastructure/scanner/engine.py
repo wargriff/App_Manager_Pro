@@ -577,10 +577,10 @@ class ProgramScanner:
         path,
     ):
 
-        return (
-            f"{name.lower()}::"
-            f"{os.path.normcase(path)}"
-        )
+        if path:
+            return os.path.normcase(path)
+
+        return f"name::{name.lower().strip()}"
 
     @staticmethod
     def safe_reg_query(

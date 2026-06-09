@@ -43,8 +43,17 @@ class ScanController:
 
     def _on_scan_complete(self):
         self.view.status_bar.hide_progress()
+
+        removed = self.view.catalog.deduplicate_all()
         count = len(self.view.catalog.all_items)
-        self.view.status_bar.set_text(f"✅ {count} apps")
+
+        if removed:
+            self.view.status_bar.set_text(
+                f"✅ {count} apps ({removed} doublons retirés)",
+            )
+        else:
+            self.view.status_bar.set_text(f"✅ {count} apps")
+
         self.view.sync_list()
         self.view.update_controller.check_updates()
 
