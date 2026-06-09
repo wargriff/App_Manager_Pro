@@ -1,0 +1,77 @@
+{
+  "rgb": {
+    "left": {
+      "mode": "static",
+      "color": [
+        255,
+        211,
+        212
+      ]
+    },
+    "right": {
+      "mode": "static",
+      "color": [
+        0,
+        255,
+        120
+      ]
+    },
+    "wheel": {
+      "mode": "static",
+      "color": [
+        0,
+        255,
+        120
+      ]
+    },
+    "dpi": {
+      "mode": "static",
+      "color": [
+        0,
+        255,
+        120
+      ]
+    },
+    "side1": {
+      "mode": "breathing",
+      "color": [
+        0,
+        255,
+        120
+      ]
+    },
+    "side2": {
+      "mode": "rainbow",
+      "color": [
+        255,
+        0,
+        4
+      ]
+    }
+  },
+  "bindings": {
+    "side1": "Left Click",
+    "right": "Right Click",
+    "left": "Spam (toggle)"
+  },
+  "macro": {
+    "buttons": {
+      "left": {
+        "cps": 5,
+        "delay": 0.026
+      },
+      "right": {
+        "cps": 15,
+        "delay": 0.019
+      },
+      "side1": {
+        "cps": 15,
+        "delay": 0.01
+      },
+      "side2": {
+        "cps": 15,
+        "delay": 0.01
+      }
+    }
+  }
+}

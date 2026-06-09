@@ -1,0 +1,73 @@
+GIF to PNG Conversion Report
+Generated: 2026-03-04 17:19:07
+==================================================
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0001.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0002.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0003.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0004.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0005.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0006.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0007.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0008.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0009.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0010.png
+Size: 160 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0011.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0012.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0013.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0014.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0015.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0016.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0017.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0018.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0019.png
+Size: 156 B
+
+Frame: 69a8698973332_146238d4_Arcade_-_Pac-Man_-_General_Sprites_-_Inky__RIght__frame_0020.png
+Size: 156 B
+
+==================================================
+SUMMARY
+==================================================
+Total frames: 20
+Total size: 3.1 KB
+==================================================
+
+Converted with ConvertICO.COM
+https://convertico.com/gif-to-png/
